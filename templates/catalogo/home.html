@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<section class="hero" id="inicio"><div class="wrap">
+<div>
+<p class="eye">Pequeños antojos · Grandes momentos</p>
+<h1 class="serif">Un toque dulce para tu día</h1>
+<p class="l">Queques, tortas, alfajores, mini donas y más preparaciones artesanales, hechas con cariño para compartir.</p>
+<div class="cta"><a class="btn" href="#catalogo">Ver catálogo dulce</a><a class="btn o" href="{{ wa_pedido }}">Hacer mi pedido</a></div>
+</div>
+<div class="col">
+<img src="{% static 'img/hero-donas.jpg' %}" alt="Mini donas personalizadas" style="left:0;top:20px;width:290px;height:300px;transform:rotate(-5deg)">
+<img src="{% static 'img/hero-alfajores.jpg' %}" alt="Alfajores bañados en chocolate" style="right:0;top:0;width:280px;height:280px;transform:rotate(4deg)">
+<img src="{% static 'img/hero-cupcakes.jpg' %}" alt="Mini cupcakes con crema" style="left:34%;bottom:0;width:270px;height:230px;transform:rotate(-2deg)">
+</div>
+</div></section>
+
+<section class="perks"><div class="wrap">
+<div><b>Hecho en casa</b><span>Productos artesanales, preparados con cariño.</span></div>
+<div><b>Precios por mayor</b><span>Alfajores desde 20 unidades y barquillos desde 60.</span></div>
+<div><b>Tortas personalizadas</b><span>Torta de cuchuflis con toppers a tu tema.</span></div>
+<div><b>Pedidos por WhatsApp</b><span>{{ negocio.telefono }}</span></div>
+</div></section>
+
+<section id="catalogo">
+<div class="wrap"><div class="hc" style="padding-top:80px;margin-bottom:28px"><p class="eye">Catálogo completo</p><h2 class="serif">Elige tu antojo</h2><p>Todos nuestros productos con sus precios, ordenados por categoría. Para eventos y cantidades grandes, consúltanos.</p></div></div>
+<nav class="chips" aria-label="Categorías del catálogo"><div class="wrap">
+{% for c in categorias %}<a class="chip" href="#{{ c.slug }}">{{ c.nombre }}</a>{% endfor %}
+</div></nav>
+
+{% for c in categorias %}
+<div class="cat {% cycle 'a' 'b' %}" id="{{ c.slug }}"><div class="wrap">
+<div class="ch">
+<p class="n">{{ forloop.counter|stringformat:"02d" }} · Categoría</p>
+<h3 class="serif">{{ c.nombre }}</h3>
+{% if c.descripcion %}<p>{{ c.descripcion }}</p>{% endif %}
+</div>
+{% if c.imagen %}<img class="catban" src="{{ c.imagen.url }}" alt="Detalle de {{ c.nombre|lower }}" loading="lazy">{% endif %}
+<div class="cards">
+{% for p in c.items %}
+<article class="card">
+{% if p.imagen %}<img src="{{ p.imagen.url }}" alt="{{ p.nombre }}" loading="lazy">{% else %}<div class="noimg"><span class="serif" style="color:#fff">{{ p.nombre }}</span></div>{% endif %}
+<div class="cb">
+<h4 class="serif tt">{{ p.nombre }}</h4>
+{% if p.subtitulo %}<p class="sub">{{ p.subtitulo }}</p>{% endif %}
+{% regroup p.precios.all by grupo as grupos %}
+{% for g in grupos %}{% if g.grouper %}<h5>{{ g.grouper }}</h5>{% endif %}
+<ul>{% for pr in g.list %}<li>{{ pr.etiqueta }}<b>{{ pr.valor }}</b></li>{% endfor %}</ul>
+{% endfor %}
+<a class="btn o sm" href="{{ wa_base }}?text=Hola%20Dulce%20Gemma%2C%20quiero%20pedir%20{{ p.nombre|urlencode }}">Pedir este producto</a>
+</div></article>
+{% endfor %}
+</div>
+</div></div>
+{% endfor %}
+
+<div class="sec"><div class="wrap"><div class="q">
+<h3 class="serif">Queques y tortas caseras</h3>
+<p>Sabores para compartir. Cuéntanos qué celebras y te ayudamos a elegir sabor, tamaño y precio.</p>
+<a class="btn" href="{{ wa_cotizar }}">Cotizar por WhatsApp</a>
+</div></div></div>
+</section>
+
+<section class="sec" id="pedidos" style="padding-top:0"><div class="wrap">
+<div class="hc"><p class="eye">Pedidos</p><h2 class="serif">Pedir es muy fácil</h2></div>
+<div class="steps">
+<div class="st"><i>1</i><b>Elige del catálogo</b><span>Revisa productos, cantidades y precios.</span></div>
+<div class="st"><i>2</i><b>Escríbenos por WhatsApp</b><span>Cuéntanos qué quieres, la cantidad, el sabor y la fecha.</span></div>
+<div class="st"><i>3</i><b>Confirma y disfruta</b><span>Confirmamos tu pedido y coordinamos la entrega contigo.</span></div>
+</div></section>
+
+<section class="fin"><div class="wrap">
+<h2 class="serif">¿Listo para endulzar tu día?</h2>
+<p>Pedidos y consultas al {{ negocio.telefono }}</p>
+<a class="btn" href="{{ wa_pedido }}">Escribir por WhatsApp</a>
+</div></section>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% load static %}<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Dulce’Gemma · Repostería artesanal{% endblock %}</title>
+<meta name="description" content="Alfajores, mini donas, cuchuflis, tortas de cuchuflis, cupcakes y más. Repostería artesanal hecha con cariño. Pedidos por WhatsApp.">
+<link rel="icon" href="{% static 'img/logo.jpg' %}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<div class="pg">
+<header class="hd"><div class="wrap">
+<a href="#inicio" aria-label="{{ negocio.nombre }}, inicio"><img src="{% static 'img/logo.jpg' %}" alt="Logo {{ negocio.nombre }}"></a>
+<nav class="nav"><a class="lk" href="#inicio">Inicio</a><a class="lk" href="#catalogo">Catálogo</a><a class="lk" href="#pedidos">Pedidos</a><a class="btn" href="{{ wa_pedido }}">Pedir por WhatsApp</a></nav>
+</div></header>
+{% block content %}{% endblock %}
+<footer class="ft"><div class="wrap">
+<img src="{% static 'img/logo.jpg' %}" alt="Logo {{ negocio.nombre }}">
+<p>{{ negocio.nombre }} · Alfajores artesanales caseros<br>Pedidos y consultas · <a href="{{ wa_base }}">{{ negocio.telefono }}</a></p>
+</div></footer>
+</div>
+</body>
+</html>
